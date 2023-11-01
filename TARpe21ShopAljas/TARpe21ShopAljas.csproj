@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.22">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TARpe21ShopAljas.Data\TARpe21ShopAljas.Data.csproj" />
+    <ProjectReference Include="..\TARpe21ShopAljas.ApplicationServices\TARpe21ShopAljas.ApplicationServices.csproj" />
+    <ProjectReference Include="..\TARpe21ShopAljas.Core\TARpe21ShopAljas.Core.csproj" />
+    <ProjectReference Include="..\TARpe21ShopAljas.Data\TARpe21ShopAljas.Data.csproj" />
+    <ProjectReference Include="..\TARpe21ShopAljas.Core\TARpe21ShopAljas.Core.csproj" />
+    <ProjectReference Include="..\TARpe21ShopAljas.Data\TARpe21ShopAljas.Data.csproj" />
+  </ItemGroup>
+
+</Project>
