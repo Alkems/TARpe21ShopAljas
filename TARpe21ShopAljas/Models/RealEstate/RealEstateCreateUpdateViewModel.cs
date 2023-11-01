@@ -1,4 +1,6 @@
-﻿namespace TARpe21ShopAljas.Models.RealEstate
+﻿using TARpe21ShopAljas.Models.Spaceship;
+
+namespace TARpe21ShopAljas.Models.RealEstate
 {
     public enum EstateType
     {
@@ -34,6 +36,9 @@
 
         public bool IsPropertyNewDevelopment { get; set; } //shows if the estate being sold is a newly developed housing unit, or an older existing one
         public bool IsPropertySold { get; set; } //shows if the property has been sold already 
+
+        public List<IFormFile> Files { get; set; } //files
+        public List<FileToApiViewModel> FileToApiViewModels { get; set; } //file viewmodels
 
         //database only properties
 
