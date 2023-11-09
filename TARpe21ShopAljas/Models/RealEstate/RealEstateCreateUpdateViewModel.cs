@@ -38,7 +38,7 @@ namespace TARpe21ShopAljas.Models.RealEstate
         public bool IsPropertySold { get; set; } //shows if the property has been sold already 
 
         public List<IFormFile> Files { get; set; } //files
-        public List<FileToApiViewModel> FileToApiViewModels { get; set; } //file viewmodels
+        public List<FileToApiViewModel> FileToApiViewModels { get; set; } = new List<FileToApiViewModel>(); //file viewmodels
 
         //database only properties
 

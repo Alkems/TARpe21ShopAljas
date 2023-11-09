@@ -17,6 +17,7 @@
 
   <ItemGroup>
 	  <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <ProjectReference Include="..\TARpe21ShopAljas.Data\TARpe21ShopAljas.Data.csproj" />
     <ProjectReference Include="..\TARpe21ShopAljas.Core\TARpe21ShopAljas.Core.csproj" />
     <ProjectReference Include="..\TARpe21ShopAljas.Core\TARpe21ShopAljas.Core.csproj" />
