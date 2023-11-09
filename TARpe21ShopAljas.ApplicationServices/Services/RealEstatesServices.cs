@@ -1,266 +1,121 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.Metrics;
-using System.Net;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TARpe21ShopAljas.ApplicationServices.Services;
+using TARpe21ShopAljas.Core.Domain;
 using TARpe21ShopAljas.Core.Dto;
 using TARpe21ShopAljas.Core.ServiceInterface;
 using TARpe21ShopAljas.Data;
-using TARpe21ShopAljas.Models.RealEstate;
-using TARpe21ShopAljas.Models.Spaceship;
 
-namespace TARpe21ShopAljas.Controllers
+namespace TARpe21ShopAljas.ApplicationServices.Services
 {
-    public class RealEstatesController : Controller
+    public class RealEstatesServices : IRealEstatesServices
     {
-        private readonly IRealEstatesServices _realEstates;
         private readonly TARpe21ShopAljasContext _context;
-        public RealEstatesController
+        private readonly IFilesServices _filesServices;
+        public RealEstatesServices
             (
-            IRealEstatesServices realEstates,
-            TARpe21ShopAljasContext context
+            TARpe21ShopAljasContext context,
+            IFilesServices filesServices
             )
         {
-            _realEstates = realEstates;
             _context = context;
+            _filesServices = filesServices;
         }
-        [HttpGet]
-        public IActionResult Index()
+        public async Task<RealEstate> Create(RealEstateDto dto)
         {
-            var result = _context.RealEstates
-                .OrderByDescending(x => x.CreatedAt)
-                .Select(x => new RealEstateIndexViewModel
+            RealEstate realEstate = new();
+
+            realEstate.Id = Guid.NewGuid();
+            realEstate.Address = dto.Address;
+            realEstate.City = dto.City;
+            realEstate.Country = dto.Country;
+            realEstate.County = dto.County;
+            realEstate.PostalCode = dto.PostalCode;
+            realEstate.PhoneNumber = dto.PhoneNumber;
+            realEstate.FaxNumber = dto.FaxNumber;
+            realEstate.ListingDescription = dto.ListingDescription;
+            realEstate.SquareMeters = dto.SquareMeters;
+            realEstate.BuildDate = dto.BuildDate;
+            realEstate.Price = dto.Price;
+            realEstate.RoomCount = dto.RoomCount;
+            realEstate.EstateFloor = dto.EstateFloor;
+            realEstate.Bathrooms = dto.Bathrooms;
+            realEstate.Bedrooms = dto.Bedrooms;
+            realEstate.DoesHaveParkingSpace = dto.DoesHaveParkingSpace;
+            realEstate.DoesHavePowerGridConnection = dto.DoesHavePowerGridConnection;
+            realEstate.DoesHaveWaterGridConnection = dto.DoesHaveWaterGridConnection;
+            realEstate.Type = dto.Type;
+            realEstate.IsPropertyNewDevelopment = dto.IsPropertyNewDevelopment;
+            realEstate.IsPropertySold = dto.IsPropertySold;
+            realEstate.CreatedAt = DateTime.Now;
+            realEstate.ModifiedAt = DateTime.Now;
+            _filesServices.FilesToApi(dto, realEstate);
+
+
+            await _context.RealEstates.AddAsync(realEstate);
+            await _context.SaveChangesAsync();
+            return realEstate;
+        }
+        public async Task<RealEstate> Delete(Guid id)
+        {
+            var realEstateId = await _context.RealEstates
+                .Include(x => x.FilesToApi)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            var images = await _context.FilesToApi
+                .Where(x => x.RealEstateId == id)
+                .Select(y => new FileToApiDto
                 {
-                    Id = x.Id,
-                    Address = x.Address,
-                    City = x.City,
-                    Country = x.Country,
-                    SquareMeters = x.SquareMeters,
-                    Price = x.Price,
-                    IsPropertySold = x.IsPropertySold,
-                });
-            return View(result);
+                    Id = y.Id,
+                    RealEstateId = y.RealEstateId,
+                    ExistingFilePath = y.ExistingFilePath
+                }).ToArrayAsync();
+            await _filesServices.RemoveImagesFromApi(images);
+            _context.RealEstates.Remove(realEstateId);
+            await _context.SaveChangesAsync();
+            return realEstateId;
         }
-
-        [HttpGet]
-        public IActionResult Create()
+        public async Task<RealEstate> Update(RealEstateDto dto)
         {
-            RealEstateCreateUpdateViewModel vm = new();
-            return View("CreateUpdate", vm);
+            RealEstate realEstate = new RealEstate();
+
+            realEstate.Id = dto.Id;
+            realEstate.Address = dto.Address;
+            realEstate.City = dto.City;
+            realEstate.Country = dto.Country;
+            realEstate.County = dto.County;
+            realEstate.PostalCode = dto.PostalCode;
+            realEstate.PhoneNumber = dto.PhoneNumber;
+            realEstate.FaxNumber = dto.FaxNumber;
+            realEstate.ListingDescription = dto.ListingDescription;
+            realEstate.SquareMeters = dto.SquareMeters;
+            realEstate.BuildDate = dto.BuildDate;
+            realEstate.Price = dto.Price;
+            realEstate.RoomCount = dto.RoomCount;
+            realEstate.EstateFloor = dto.EstateFloor;
+            realEstate.Bathrooms = dto.Bathrooms;
+            realEstate.Bedrooms = dto.Bedrooms;
+            realEstate.DoesHaveParkingSpace = dto.DoesHaveParkingSpace;
+            realEstate.DoesHavePowerGridConnection = dto.DoesHavePowerGridConnection;
+            realEstate.DoesHaveWaterGridConnection = dto.DoesHaveWaterGridConnection;
+            realEstate.Type = dto.Type;
+            realEstate.IsPropertyNewDevelopment = dto.IsPropertyNewDevelopment;
+            realEstate.IsPropertySold = dto.IsPropertySold;
+            realEstate.CreatedAt = dto.CreatedAt;
+            realEstate.ModifiedAt = DateTime.Now;
+
+            _context.RealEstates.Update(realEstate);
+            await _context.SaveChangesAsync();
+            return realEstate;
         }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(RealEstateCreateUpdateViewModel vm)
+        public async Task<RealEstate> GetAsync(Guid id)
         {
-            var dto = new RealEstateDto()
-            {
-                Id = Guid.NewGuid(),
-                Address = vm.Address,
-                City = vm.City,
-                Country = vm.Country,
-                County = vm.County,
-                SquareMeters = vm.SquareMeters,
-                Price = vm.Price,
-                PostalCode = vm.PostalCode,
-                PhoneNumber = vm.PhoneNumber,
-                FaxNumber = vm.FaxNumber,
-                ListingDescription = vm.ListingDescription,
-                BuildDate = vm.BuildDate,
-                RoomCount = vm.RoomCount,
-                FloorCount = vm.FloorCount,
-                EstateFloor = vm.EstateFloor,
-                Bathrooms = vm.Bathrooms,
-                Bedrooms = vm.Bedrooms,
-                DoesHaveParkingSpace = vm.DoesHaveParkingSpace,
-                DoesHavePowerGridConnection = vm.DoesHavePowerGridConnection,
-                DoesHaveWaterGridConnection = vm.DoesHaveWaterGridConnection,
-                Type = vm.Type,
-                IsPropertyNewDevelopment = vm.IsPropertyNewDevelopment,
-                IsPropertySold = vm.IsPropertySold,
-                CreatedAt = DateTime.Now,
-                ModifiedAt = DateTime.Now,
-                Files = vm.Files,
-                FilesToApiDtos = vm.FileToApiViewModels
-                .Select(z => new FileToApiDto
-                {
-                    Id = z.ImageId,
-                    ExistingFilePath = z.FilePath,
-                    RealEstateId = z.RealEstateId,
-                }).ToArray()
-            };
-            var result = await _realEstates.Create(dto);
-            if (result == null)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            return RedirectToAction("Index", vm);
-        }
-        [HttpGet]
-        public async Task<IActionResult> Update(Guid id)
-        {
-            var realEstate = await _realEstates.GetAsync(id);
-            if (realEstate == null)
-            {
-                return NotFound();
-            }
-            var vm = new RealEstateCreateUpdateViewModel();
-
-            vm.Id = realEstate.Id;
-            vm.Address = realEstate.Address;
-            vm.City = realEstate.City;
-            vm.Country = realEstate.Country;
-            vm.County = realEstate.County;
-            vm.SquareMeters = realEstate.SquareMeters;
-            vm.Price = realEstate.Price;
-            vm.PostalCode = realEstate.PostalCode;
-            vm.PhoneNumber = realEstate.PhoneNumber;
-            vm.FaxNumber = realEstate.FaxNumber;
-            vm.ListingDescription = realEstate.ListingDescription;
-            vm.BuildDate = realEstate.BuildDate;
-            vm.RoomCount = realEstate.RoomCount;
-            vm.FloorCount = realEstate.FloorCount;
-            vm.EstateFloor = realEstate.EstateFloor;
-            vm.Bathrooms = realEstate.Bathrooms;
-            vm.Bedrooms = realEstate.Bedrooms;
-            vm.DoesHaveParkingSpace = realEstate.DoesHaveParkingSpace;
-            vm.DoesHavePowerGridConnection = realEstate.DoesHavePowerGridConnection;
-            vm.DoesHaveWaterGridConnection = realEstate.DoesHaveWaterGridConnection;
-            vm.Type = realEstate.Type;
-            vm.IsPropertyNewDevelopment = realEstate.IsPropertyNewDevelopment;
-            vm.IsPropertySold = realEstate.IsPropertySold;
-            vm.CreatedAt = DateTime.Now;
-            vm.ModifiedAt = DateTime.Now;
-
-            return View("CreateUpdate", vm);
-        }
-        [HttpPost]
-        public async Task<IActionResult> Update(RealEstateCreateUpdateViewModel vm)
-        {
-            var dto = new RealEstateDto()
-            {
-                Id = (Guid)vm.Id,
-                Address = vm.Address,
-                City = vm.City,
-                Country = vm.Country,
-                County = vm.County,
-                SquareMeters = vm.SquareMeters,
-                Price = vm.Price,
-                PostalCode = vm.PostalCode,
-                PhoneNumber = vm.PhoneNumber,
-                FaxNumber = vm.FaxNumber,
-                ListingDescription = vm.ListingDescription,
-                BuildDate = vm.BuildDate,
-                RoomCount = vm.RoomCount,
-                FloorCount = vm.FloorCount,
-                EstateFloor = vm.EstateFloor,
-                Bathrooms = vm.Bathrooms,
-                Bedrooms = vm.Bedrooms,
-                DoesHaveParkingSpace = vm.DoesHaveParkingSpace,
-                DoesHavePowerGridConnection = vm.DoesHavePowerGridConnection,
-                DoesHaveWaterGridConnection = vm.DoesHaveWaterGridConnection,
-                Type = vm.Type,
-                IsPropertyNewDevelopment = vm.IsPropertyNewDevelopment,
-                IsPropertySold = vm.IsPropertySold,
-                CreatedAt = vm.CreatedAt,
-                ModifiedAt = DateTime.Now,
-                Files = vm.Files,
-                FilesToApiDtos = vm.FileToApiViewModels
-                .Select(z => new FileToApiDto
-                {
-                    Id = z.ImageId,
-                    ExistingFilePath = z.FilePath,
-                    RealEstateId = z.RealEstateId,
-                }).ToArray()
-            };
-            var result = await _realEstates.Update(dto);
-            if (result == null)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            return RedirectToAction(nameof(Index), vm);
-        }
-        [HttpGet]
-        public async Task<IActionResult> Details(Guid id)
-        {
-            var realEstate = await _realEstates.GetAsync(id);
-            if (realEstate == null)
-            {
-                return NotFound();
-            }
-
-            var vm = new RealEstateDetailsViewModel();
-
-            vm.Id = realEstate.Id;
-            vm.Address = realEstate.Address;
-            vm.City = realEstate.City;
-            vm.Country = realEstate.Country;
-            vm.County = realEstate.County;
-            vm.SquareMeters = realEstate.SquareMeters;
-            vm.Price = realEstate.Price;
-            vm.PostalCode = realEstate.PostalCode;
-            vm.PhoneNumber = realEstate.PhoneNumber;
-            vm.FaxNumber = realEstate.FaxNumber;
-            vm.ListingDescription = realEstate.ListingDescription;
-            vm.BuildDate = realEstate.BuildDate;
-            vm.RoomCount = realEstate.RoomCount;
-            vm.FloorCount = realEstate.FloorCount;
-            vm.EstateFloor = realEstate.EstateFloor;
-            vm.Bathrooms = realEstate.Bathrooms;
-            vm.Bedrooms = realEstate.Bedrooms;
-            vm.DoesHaveParkingSpace = realEstate.DoesHaveParkingSpace;
-            vm.DoesHavePowerGridConnection = realEstate.DoesHavePowerGridConnection;
-            vm.DoesHaveWaterGridConnection = realEstate.DoesHaveWaterGridConnection;
-            vm.Type = realEstate.Type;
-            vm.IsPropertyNewDevelopment = realEstate.IsPropertyNewDevelopment;
-            vm.IsPropertySold = realEstate.IsPropertySold;
-
-            return View(vm);
-        }
-        [HttpGet]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            var realEstate = await _realEstates.GetAsync(id);
-            if (realEstate == null)
-            {
-                return NotFound();
-            }
-
-            var vm = new RealEstateDeleteViewModel();
-
-            vm.Id = realEstate.Id;
-            vm.Address = realEstate.Address;
-            vm.City = realEstate.City;
-            vm.Country = realEstate.Country;
-            vm.County = realEstate.County;
-            vm.SquareMeters = realEstate.SquareMeters;
-            vm.Price = realEstate.Price;
-            vm.PostalCode = realEstate.PostalCode;
-            vm.PhoneNumber = realEstate.PhoneNumber;
-            vm.FaxNumber = realEstate.FaxNumber;
-            vm.ListingDescription = realEstate.ListingDescription;
-            vm.BuildDate = realEstate.BuildDate;
-            vm.RoomCount = realEstate.RoomCount;
-            vm.FloorCount = realEstate.FloorCount;
-            vm.EstateFloor = realEstate.EstateFloor;
-            vm.Bathrooms = realEstate.Bathrooms;
-            vm.Bedrooms = realEstate.Bedrooms;
-            vm.DoesHaveParkingSpace = realEstate.DoesHaveParkingSpace;
-            vm.DoesHavePowerGridConnection = realEstate.DoesHavePowerGridConnection;
-            vm.DoesHaveWaterGridConnection = realEstate.DoesHaveWaterGridConnection;
-            vm.Type = realEstate.Type;
-            vm.IsPropertyNewDevelopment = realEstate.IsPropertyNewDevelopment;
-            vm.IsPropertySold = realEstate.IsPropertySold;
-
-            return View(vm);
-        }
-        [HttpPost]
-        public async Task<IActionResult> DeleteConfirmation(Guid id)
-        {
-            var realEstate = await _realEstates.GetAsync(id);
-            if (realEstate == null)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            return RedirectToAction(nameof(Index));
-
+            var result = await _context.RealEstates
+                .FirstOrDefaultAsync(x => x.Id == id);
+            return result;
         }
     }
 }
