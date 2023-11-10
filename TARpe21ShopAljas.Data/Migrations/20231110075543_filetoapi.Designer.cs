@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TARpe21ShopAljas.Data;
 
@@ -11,9 +12,10 @@ using TARpe21ShopAljas.Data;
 namespace TARpe21ShopAljas.Data.Migrations
 {
     [DbContext(typeof(TARpe21ShopAljasContext))]
-    partial class TARpe21ShopAljasContextModelSnapshot : ModelSnapshot
+    [Migration("20231110075543_filetoapi")]
+    partial class filetoapi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

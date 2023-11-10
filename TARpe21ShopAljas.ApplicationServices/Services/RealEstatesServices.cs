@@ -106,6 +106,7 @@ namespace TARpe21ShopAljas.ApplicationServices.Services
             realEstate.IsPropertySold = dto.IsPropertySold;
             realEstate.CreatedAt = dto.CreatedAt;
             realEstate.ModifiedAt = DateTime.Now;
+            _filesServices.FilesToApi(dto, realEstate);
 
             _context.RealEstates.Update(realEstate);
             await _context.SaveChangesAsync();
