@@ -1,6 +1,4 @@
-﻿using TARpe21ShopAljas.Models.Spaceship;
-
-namespace TARpe21ShopAljas.Models.RealEstate
+﻿namespace TARpe21ShopAljas.Models.RealEstate
 {
     public class RealEstateDetailsViewModel
     {

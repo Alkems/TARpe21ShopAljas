@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace TARpe21ShopAljas.Core.Dto
 {
-    internal class FileToApiDto
+    public class FileToApiDto
     {
+        public Guid Id { get; set; }
+        public string ExistingFilePath { get; set; }
+        public Guid? RealEstateId { get; set; }
     }
 }
