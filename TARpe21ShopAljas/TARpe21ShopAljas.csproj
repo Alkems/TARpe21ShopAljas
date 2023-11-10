@@ -23,4 +23,9 @@
     <ProjectReference Include="..\TARpe21ShopAljas.Data\TARpe21ShopAljas.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Car\" />
+    <Folder Include="Views\Cars\" />
+  </ItemGroup>
+
 </Project>
