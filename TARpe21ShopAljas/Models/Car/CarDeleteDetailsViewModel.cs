@@ -1,4 +1,5 @@
 ﻿using TARpe21ShopAljas.Models.RealEstate;
+using TARpe21ShopAljas.Models.Spaceship;
 
 namespace TARpe21ShopAljas.Models.Car
 {
@@ -15,6 +16,9 @@ namespace TARpe21ShopAljas.Models.Car
         public List<FileToApiViewModel> FileToApiViewModels { get; set; } = new List<FileToApiViewModel>();
         public string FuelType { get; set; }
 
+
+
+        public List<ImageViewModel> Image { get; set; } = new List<ImageViewModel>();
         //Db only
         public DateTime CreatedAt { get; set; } // when the entry was created
         public DateTime ModifiedAt { get; set; } // when the entry has been modified last
