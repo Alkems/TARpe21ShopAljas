@@ -1,4 +1,4 @@
-﻿namespace TARpe21ShopAljas.Models.RealEstate
+﻿namespace TARpe21ShopAljas.Models.Shared
 {
     public class FileToApiViewModel
     {

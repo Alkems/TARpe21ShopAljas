@@ -1,4 +1,4 @@
-﻿using TARpe21ShopAljas.Models.RealEstate;
+﻿using TARpe21ShopAljas.Models.Shared;
 
 namespace TARpe21ShopAljas.Models.Car
 {

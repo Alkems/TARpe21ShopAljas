@@ -1,7 +1,10 @@
-﻿@model TARpe21ShopAljas.Models.Car.ImageViewModel
+﻿@model TARpe21ShopAljas.Models.Shared.FileToApiViewModel
+
+@{
+    var photoPaths = "~/multipleFileUpload/" + (Model.FilePath ?? "noimage.jpg");
+}
 
 <div class="form-group row col-sm-4 offset-2">
-    <div>@Model.ImageTitle</div>
-    <img class="card-img-top" src="@Model.Image" asp-append-version="true"/>
-    @*<input asp-action="removeImage" asp-controller="cars" asp-route-imageId="@Model.ImageId" type="submit" class="btn btn-danger" value="Remove Image"/>*@
+    <div>@Model.FilePath</div>
+    <img class="card-img-top" src="@photoPaths" asp-append-version="true" />
 </div>

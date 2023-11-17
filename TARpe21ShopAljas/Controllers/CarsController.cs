@@ -7,6 +7,7 @@ using TARpe21ShopAljas.Core.ServiceInterface;
 using TARpe21ShopAljas.Data;
 using TARpe21ShopAljas.Models.Car;
 using TARpe21ShopAljas.Models.RealEstate;
+using TARpe21ShopAljas.Models.Shared;
 
 namespace TARpe21ShopAljas.Controllers
 {
@@ -158,7 +159,7 @@ namespace TARpe21ShopAljas.Controllers
                     ImageId = y.Id
                 }).ToArrayAsync();
 
-            var vm = new CarCreateUpdateViewModel();
+            var vm = new CarDeleteDetailsViewModel();
 
             vm.Id = car.Id;
             vm.Name = car.Name;
@@ -166,13 +167,14 @@ namespace TARpe21ShopAljas.Controllers
             vm.Transmission = car.Transmission;
             vm.Horsepower = car.Horsepower;
             vm.Previously_Owned = car.Previously_Owned;
+            vm.isDeleting = false;
             vm.ZeroToSixty = car.ZeroToSixty;
             vm.FuelType = car.FuelType;
             vm.CreatedAt = DateTime.Now;
             vm.ModifiedAt = DateTime.Now;
             vm.FileToApiViewModels.AddRange(images);
 
-            return View(vm);
+            return View("DeleteDetails", vm);
         }
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
@@ -190,7 +192,7 @@ namespace TARpe21ShopAljas.Controllers
                     ImageId = y.Id
                 }).ToArrayAsync();
 
-            var vm = new CarCreateUpdateViewModel();
+            var vm = new CarDeleteDetailsViewModel();
 
             vm.Id = car.Id;
             vm.Name = car.Name;
@@ -202,9 +204,10 @@ namespace TARpe21ShopAljas.Controllers
             vm.FuelType = car.FuelType;
             vm.CreatedAt = DateTime.Now;
             vm.ModifiedAt = DateTime.Now;
+            vm.isDeleting = true;
             vm.FileToApiViewModels.AddRange(images);
 
-            return View(vm);
+            return View("DeleteDetails",vm);
         }
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmation(Guid id)

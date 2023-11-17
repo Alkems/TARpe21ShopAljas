@@ -1,4 +1,5 @@
-﻿using TARpe21ShopAljas.Models.Spaceship;
+﻿using TARpe21ShopAljas.Models.Shared;
+using TARpe21ShopAljas.Models.Spaceship;
 
 namespace TARpe21ShopAljas.Models.RealEstate
 {

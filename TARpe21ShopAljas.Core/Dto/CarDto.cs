@@ -16,7 +16,7 @@ namespace TARpe21ShopAljas.Core.Dto
         public int Horsepower { get; set; }
         public string Previously_Owned { get; set; }
         public List<IFormFile> Files { get; set; }
-        public List<FileToApiDto> FilesToApiDtos { get; set; } = new List<FileToApiDto>();
+        public IEnumerable<FileToApiDto> FilesToApiDtos { get; set; } = new List<FileToApiDto>();
         public int ZeroToSixty { get; set; }
         public string FuelType { get; set; }
         //Db only

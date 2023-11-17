@@ -37,6 +37,9 @@ namespace TARpe21ShopAljas.ApplicationServices.Services
             car.Previously_Owned = dto.Previously_Owned;
             car.Transmission = dto.Transmission;
             car.FuelType = dto.FuelType;
+            car.ZeroToSixty = dto.ZeroToSixty;
+            car.CreatedAt = DateTime.Now;
+            car.ModifiedAt = DateTime.Now;
             _filesServices.FilesToApi(dto, car);
 
 
@@ -74,6 +77,9 @@ namespace TARpe21ShopAljas.ApplicationServices.Services
             car.Previously_Owned = dto.Previously_Owned;
             car.Transmission = dto.Transmission;
             car.FuelType = dto.FuelType;
+            car.ZeroToSixty = dto.ZeroToSixty;
+            car.CreatedAt = dto.CreatedAt;
+            car.ModifiedAt = DateTime.Now;
             _filesServices.FilesToApi(dto, car);
 
             _context.Cars.Update(car);

@@ -4,9 +4,10 @@ using System.Diagnostics.Metrics;
 using System.Net;
 using TARpe21ShopAljas.Core.Dto;
 using TARpe21ShopAljas.Core.ServiceInterface;
-using TARpe21ShopAljas.Models.RealEstate;
+using TARpe21ShopAljas.Models.Shared;
 using TARpe21ShopAljas.Models.Spaceship;
 using TARpe21ShopAljas.Data;
+using TARpe21ShopAljas.Models.RealEstate;
 
 namespace TARpe21Shopaljas.Controllers
 {
