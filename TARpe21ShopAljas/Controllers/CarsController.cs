@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic.FileIO;
 using System.Xml.Linq;
+using TARpe21ShopAljas.ApplicationServices.Services;
 using TARpe21ShopAljas.Core.Dto;
 using TARpe21ShopAljas.Core.ServiceInterface;
 using TARpe21ShopAljas.Data;
@@ -15,14 +16,16 @@ namespace TARpe21ShopAljas.Controllers
     {
         private readonly ICarServices _cars;
         private readonly TARpe21ShopAljasContext _context;
+        private readonly IFilesServices _filesServices;
         public CarsController
             (
             ICarServices cars,
-            TARpe21ShopAljasContext context
+            TARpe21ShopAljasContext context, IFilesServices files
             )
         {
             _cars = cars;
             _context = context;
+            _filesServices = files;
         }
         [HttpGet]
         public IActionResult Index()
@@ -41,6 +44,21 @@ namespace TARpe21ShopAljas.Controllers
                     FuelType = x.FuelType,
                 });
             return View(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveImage(FileToApiViewModel vm)
+        {
+            var dto = new FileToApiDto()
+            {
+                Id = vm.ImageId
+            };
+            var image = await _filesServices.RemoveImageFromApi(dto);
+            if (image == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -117,7 +135,7 @@ namespace TARpe21ShopAljas.Controllers
         {
             var dto = new CarDto()
             {
-                Id = Guid.NewGuid(),
+                Id = vm.Id,
                 Name = vm.Name,
                 DriveTrain = vm.DriveTrain,
                 Transmission = vm.Transmission,

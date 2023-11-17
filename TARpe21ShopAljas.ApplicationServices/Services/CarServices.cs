@@ -69,13 +69,12 @@ namespace TARpe21ShopAljas.ApplicationServices.Services
         {
             Car car = new Car();
 
-            car.Id = Guid.NewGuid();
+            car.Id = dto.Id;
             car.Name = dto.Name;
             car.Transmission = dto.Transmission;
             car.DriveTrain = dto.DriveTrain;
             car.Horsepower = dto.Horsepower;
             car.Previously_Owned = dto.Previously_Owned;
-            car.Transmission = dto.Transmission;
             car.FuelType = dto.FuelType;
             car.ZeroToSixty = dto.ZeroToSixty;
             car.CreatedAt = dto.CreatedAt;

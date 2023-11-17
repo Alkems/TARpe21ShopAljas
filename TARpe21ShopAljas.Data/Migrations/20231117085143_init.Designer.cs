@@ -12,8 +12,8 @@ using TARpe21ShopAljas.Data;
 namespace TARpe21ShopAljas.Data.Migrations
 {
     [DbContext(typeof(TARpe21ShopAljasContext))]
-    [Migration("20231027091925_realestates")]
-    partial class realestates
+    [Migration("20231117085143_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,74 @@ namespace TARpe21ShopAljas.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("TARpe21ShopAljas.Core.Domain.Car", b =>
+                {
+                    b.Property<Guid?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DriveTrain")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FuelType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Horsepower")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Previously_Owned")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Transmission")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ZeroToSixty")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cars");
+                });
+
+            modelBuilder.Entity("TARpe21ShopAljas.Core.Domain.FileToApi", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CarId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ExistingFilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("RealEstateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("RealEstateId");
+
+                    b.ToTable("FilesToApi");
+                });
 
             modelBuilder.Entity("TARpe21ShopAljas.Core.Domain.FileToDatabase", b =>
                 {
@@ -91,9 +159,6 @@ namespace TARpe21ShopAljas.Data.Migrations
                     b.Property<int?>("EstateFloor")
                         .HasColumnType("int");
 
-                    b.Property<int>("EstateType")
-                        .HasColumnType("int");
-
                     b.Property<int>("FaxNumber")
                         .HasColumnType("int");
 
@@ -127,6 +192,10 @@ namespace TARpe21ShopAljas.Data.Migrations
 
                     b.Property<int>("SquareMeters")
                         .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -200,6 +269,27 @@ namespace TARpe21ShopAljas.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Spaceships");
+                });
+
+            modelBuilder.Entity("TARpe21ShopAljas.Core.Domain.FileToApi", b =>
+                {
+                    b.HasOne("TARpe21ShopAljas.Core.Domain.Car", null)
+                        .WithMany("FilesToApi")
+                        .HasForeignKey("CarId");
+
+                    b.HasOne("TARpe21ShopAljas.Core.Domain.RealEstate", null)
+                        .WithMany("FilesToApi")
+                        .HasForeignKey("RealEstateId");
+                });
+
+            modelBuilder.Entity("TARpe21ShopAljas.Core.Domain.Car", b =>
+                {
+                    b.Navigation("FilesToApi");
+                });
+
+            modelBuilder.Entity("TARpe21ShopAljas.Core.Domain.RealEstate", b =>
+                {
+                    b.Navigation("FilesToApi");
                 });
 #pragma warning restore 612, 618
         }
