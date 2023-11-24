@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TARpe21ShopAljas .ApplicationServices.Services;
+using TARpe21ShopAljas.ApplicationServices.Services;
 using TARpe21ShopAljas.Core.Dto;
 using TARpe21ShopAljas.Core.ServiceInterface;
 using TARpe21ShopAljas.Data;

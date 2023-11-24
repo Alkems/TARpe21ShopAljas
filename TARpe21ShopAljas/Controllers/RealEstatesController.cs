@@ -4,9 +4,11 @@ using System.Diagnostics.Metrics;
 using System.Net;
 using TARpe21ShopAljas.Core.Dto;
 using TARpe21ShopAljas.Core.ServiceInterface;
-using TARpe21ShopAljas.Models.RealEstate;
+using TARpe21ShopAljas.Models.Shared;
 using TARpe21ShopAljas.Models.Spaceship;
 using TARpe21ShopAljas.Data;
+using TARpe21ShopAljas.Models.RealEstate;
+using TARpe21ShopAljas.ApplicationServices.Services;
 
 namespace TARpe21Shopaljas.Controllers
 {
@@ -14,14 +16,16 @@ namespace TARpe21Shopaljas.Controllers
     {
         private readonly IRealEstatesServices _realEstates;
         private readonly TARpe21ShopAljasContext _context;
+        private readonly IFilesServices _filesServices;
         public RealEstatesController
             (
             IRealEstatesServices realEstates,
-            TARpe21ShopAljasContext context
+            TARpe21ShopAljasContext context, IFilesServices files
             )
         {
             _realEstates = realEstates;
             _context = context;
+            _filesServices = files;
         }
         [HttpGet]
         public IActionResult Index()
@@ -39,6 +43,21 @@ namespace TARpe21Shopaljas.Controllers
                     IsPropertySold = x.IsPropertySold,
                 });
             return View(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveImage(FileToApiViewModel vm)
+        {
+            var dto = new FileToApiDto()
+            {
+                Id = vm.ImageId
+            };
+            var image = await _filesServices.RemoveImageFromApi(dto);
+            if (image == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -236,7 +255,7 @@ namespace TARpe21Shopaljas.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var realEstate = await _realEstates.GetAsync(id);
+            var realEstate = await _realEstates.Delete(id);
             if (realEstate == null)
             {
                 return NotFound();
