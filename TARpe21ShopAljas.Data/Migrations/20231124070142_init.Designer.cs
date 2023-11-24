@@ -12,7 +12,7 @@ using TARpe21ShopAljas.Data;
 namespace TARpe21ShopAljas.Data.Migrations
 {
     [DbContext(typeof(TARpe21ShopAljasContext))]
-    [Migration("20231117085143_init")]
+    [Migration("20231124070142_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -255,7 +255,7 @@ namespace TARpe21Shopaljas.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var realEstate = await _realEstates.GetAsync(id);
+            var realEstate = await _realEstates.Delete(id);
             if (realEstate == null)
             {
                 return NotFound();
