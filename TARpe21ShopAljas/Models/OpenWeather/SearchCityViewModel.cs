@@ -2,5 +2,6 @@
 {
     public class SearchCityViewModel
     {
+        public string CityName { get; set; }
     }
 }

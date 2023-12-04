@@ -1,6 +1,54 @@
-﻿namespace TARpe21ShopAljas.Views.OpenWeather
-{
-    public class City
-    {
-    }
-}
+﻿@model Tarpe21ShopAljas.Models.OpenWeather.CityResultViewModel
+
+<h1>City</h1>
+
+<div class="container">
+    <dl class="row">
+        <h2>Forecast for the selected city</h2>
+
+        <div class="form-group row">
+            <label asp-for="City" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.City)
+        </div>
+        <div class="form-group row">
+            <label asp-for="Timezone" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.Timezone)
+        </div>
+        <div class="form-group row">
+            <label asp-for="Name" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.Name)
+        </div>
+        <div class="form-group row">
+            <label asp-for="Lon" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.Lon)
+        </div>
+        <div class="form-group row">
+            <label asp-for="Lat" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.Lat)
+        </div>
+        <div class="form-group row">
+            <label asp-for="Temperature" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.Temperature)
+        </div>
+        <div class="form-group row">
+            <label asp-for="Feels_like" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.Feels_like)
+        </div>
+        <div class="form-group row">
+            <label asp-for="Pressure" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.Pressure)
+        </div>
+        <div class="form-group row">
+            <label asp-for="Humidity" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.Humidity)
+        </div>
+        <div class="form-group row">
+            <label asp-for="Description" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.Description)
+        </div>
+        <div class="form-group row">
+            <label asp-for="Speed" class="col-sm-2 col-form-label"></label>
+            @Html.DisplayFor(model => model.Speed)
+        </div>
+    </dl>
+</div>
