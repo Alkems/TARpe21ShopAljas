@@ -12,14 +12,14 @@ using TARpe21ShopAljas.Data;
 namespace TARpe21ShopAljas.Data.Migrations
 {
     [DbContext(typeof(TARpe21ShopAljasContext))]
-    [Migration("20231124070142_init")]
+    [Migration("20231204105308_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.22")
+                .HasAnnotation("ProductVersion", "6.0.23")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
