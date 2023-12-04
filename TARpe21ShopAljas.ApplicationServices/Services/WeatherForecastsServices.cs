@@ -6,12 +6,18 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using TARpe21ShopAljas.Core.Dto.WeatherDtos;
+using TARpe21ShopAljas.Core.Dto.OpenWeatherDto;
 using TARpe21ShopAljas.Core.ServiceInterface;
 
 namespace TARpe21ShopAljas.ApplicationServices.Services
 {
     public class WeatherForecastsServices : IWeatherForecastsServices
     {
+        public Task<OpenWeatherResultDto> OpenWeatherDetail(OpenWeatherResultDto dto)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<WeatherResultDto> WeatherDetail(WeatherResultDto dto)
         {
             string apikey = "UoJSCG3lbTnHIA9VEMQbeILRapsOWdQx";
