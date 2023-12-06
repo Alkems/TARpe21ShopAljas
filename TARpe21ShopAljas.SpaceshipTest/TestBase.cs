@@ -11,10 +11,11 @@ using TARpe21ShopAljas.Core.ServiceInterface;
 using TARpe21ShopAljas.Data;
 using TARpe21ShopAljas.SpaceshipTest.Macros;
 using Microsoft.Extensions.Hosting;
+using TARpe21ShopAljas.SpaceshipTest.Mock;
 
 namespace TARpe21ShopAljas.SpaceshipTest
 {
-    public class TestBase
+    public abstract class TestBase
     {
         protected IServiceProvider serviceProvider { get; set; }
 
@@ -29,8 +30,7 @@ namespace TARpe21ShopAljas.SpaceshipTest
         {
             return serviceProvider.GetService<T>();
         }
-        
-        protected T Macro<T>() where  T : IMacros
+        protected T Macro<T>() where T : IMacros
         {
             return serviceProvider.GetService<T>();
         }
@@ -38,7 +38,7 @@ namespace TARpe21ShopAljas.SpaceshipTest
         {
             services.AddScoped<ISpaceshipsServices, SpaceshipsServices>();
             services.AddScoped<IFilesServices, FilesServices>();
-            services.AddScoped<IHostingEnvironment>();
+            services.AddScoped<IHostingEnvironment, MockHostingEnvironment>();
 
             services.AddDbContext<TARpe21ShopAljasContext>
                 (x =>
@@ -53,7 +53,7 @@ namespace TARpe21ShopAljas.SpaceshipTest
             var macroBaseType = typeof(IMacros);
             var macros = macroBaseType.Assembly.GetTypes()
                 .Where(x => macroBaseType.IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract);
-            foreach (var macro in macros )
+            foreach (var macro in macros)
             {
                 services.AddSingleton(macro);
             }

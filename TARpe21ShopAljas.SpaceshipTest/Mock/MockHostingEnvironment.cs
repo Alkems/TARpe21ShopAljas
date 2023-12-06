@@ -1,13 +1,14 @@
 ﻿using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TARpe21ShopAljas.SpaceshipTest
+namespace TARpe21ShopAljas.SpaceshipTest.Mock
 {
-    public class MockHostingEnvironment
+    public class MockHostingEnvironment : IHostingEnvironment
     {
         public string EnvironmentName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string ApplicationName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
