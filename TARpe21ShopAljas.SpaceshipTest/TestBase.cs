@@ -38,7 +38,7 @@ namespace TARpe21ShopAljas.SpaceshipTest
         {
             services.AddScoped<ISpaceshipsServices, SpaceshipsServices>();
             services.AddScoped<IFilesServices, FilesServices>();
-            services.AddScoped<IHostingEnvironment, MockHostingEnvironment>();
+            services.AddScoped<IHostingEnvironment, MockIHostingEnvironment>();
 
             services.AddDbContext<TARpe21ShopAljasContext>
                 (x =>

@@ -71,9 +71,6 @@ public class Mains
     [JsonPropertyName("temp")]
     public double Temp { get; set; }
 
-    [JsonPropertyName("feels_like")]
-    public double FeelsLike { get; set; }
-
     [JsonPropertyName("temp_min")]
     public double TempMin { get; set; }
 

@@ -152,6 +152,5 @@ namespace TARpe21ShopAljas.ApplicationServices.Services
             await _context.SaveChangesAsync();
             return null;
         }
-
     }
 }

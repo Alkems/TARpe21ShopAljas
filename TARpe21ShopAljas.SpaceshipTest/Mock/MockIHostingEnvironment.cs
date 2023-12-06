@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TARpe21ShopAljas.SpaceshipTest.Mock
 {
-    public class MockHostingEnvironment : IHostingEnvironment
+    public class MockIHostingEnvironment : IHostingEnvironment
     {
         public string EnvironmentName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string ApplicationName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

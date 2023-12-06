@@ -8,15 +8,12 @@ using System.Threading.Tasks;
 using TARpe21ShopAljas.Core.Dto.WeatherDtos;
 using TARpe21ShopAljas.Core.Dto.OpenWeatherDto;
 using TARpe21ShopAljas.Core.ServiceInterface;
+using Tarpe21ShopAljas.Core.Dto.OpenWeatherDto;
 
 namespace TARpe21ShopAljas.ApplicationServices.Services
 {
     public class WeatherForecastsServices : IWeatherForecastsServices
     {
-        public Task<OpenWeatherResultDto> OpenWeatherDetail(OpenWeatherResultDto dto)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<WeatherResultDto> WeatherDetail(WeatherResultDto dto)
         {
@@ -60,6 +57,29 @@ namespace TARpe21ShopAljas.ApplicationServices.Services
                 dto.NightHasPrecipitation = weatherInfo.DailyForecasts[0].Night.HasPrecipitation;
                 dto.NightPrecipitationType = weatherInfo.DailyForecasts[0].Night.PrecipitationType;
                 dto.NightPrecipitationIntensity = weatherInfo.DailyForecasts[0].Night.PrecipitationIntensity;
+            }
+            return dto;
+        }
+
+        public async Task<OpenWeatherResultDto> OpenWeatherDetail(OpenWeatherResultDto dto)
+        {
+            string apikey = "e294f7c54fe454ddfe2131bbe603db4b";
+            string city = dto.City;
+            var url = $"https://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&APPID={apikey}";
+
+            using (WebClient client = new WebClient())
+            {
+                string json = client.DownloadString(url);
+                OpenWeatherRootDto weatherInfo = (new JavaScriptSerializer()).Deserialize<OpenWeatherRootDto>(json);
+
+                dto.City = weatherInfo.Name;
+                dto.Timezone = weatherInfo.Timezone;
+                dto.Temperature = weatherInfo.Main.Temp;
+                dto.Humidity = weatherInfo.Main.Humidity;
+                dto.Pressure = weatherInfo.Main.Pressure;
+                dto.Speed = weatherInfo.Wind.Speed;
+                dto.Description = weatherInfo.Weather[0].Description;
+                dto.Main = weatherInfo.Weather[0].Main;
             }
             return dto;
         }
