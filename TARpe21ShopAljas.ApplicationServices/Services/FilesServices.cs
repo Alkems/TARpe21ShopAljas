@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using TARpe21ShopAljas.ApplicationServices.Services;
 using TARpe21ShopAljas.Core.Domain;
